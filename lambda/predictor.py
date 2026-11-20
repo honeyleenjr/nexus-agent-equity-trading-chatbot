@@ -25,7 +25,7 @@ def summarise_history(history):
 
 def lambda_handler(event, context):
     print("=== PredictorLambda ===")
-    print(json.dumps(event, indent=2))
+    print("Event keys:", sorted(event.keys()) if isinstance(event, dict) else type(event).__name__)
 
     symbol = event.get("symbol", "AAPL")
     timeframe = event.get("timeframe", "next_week")

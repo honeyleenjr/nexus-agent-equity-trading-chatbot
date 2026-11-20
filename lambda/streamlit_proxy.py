@@ -38,7 +38,7 @@ def invoke_lambda(arn, payload):
 # ---------------------------
 def handle_http_event(event):
     print("=== STREAMLIT EVENT ===")
-    print(json.dumps(event))
+    print("Event keys:", sorted(event.keys()) if isinstance(event, dict) else type(event).__name__)
 
     body = event.get("body")
     if isinstance(body, str):
@@ -59,7 +59,7 @@ def handle_http_event(event):
 
     session_id = body.get("sessionId") or "streamlit-session"
 
-    print("User prompt:", prompt)
+    print("User prompt received (length):", len(prompt))
 
     # ---- SEND TO BEDROCK AGENT ----
     response = bedrock_agent_rt.invoke_agent(
@@ -79,8 +79,7 @@ def handle_http_event(event):
                 except:
                     final_text += b.decode("latin-1")
 
-    print("=== FINAL AGENT RESPONSE ===")
-    print(final_text)
+    print("=== FINAL AGENT RESPONSE === (length):", len(final_text))
 
     return {
         "statusCode": 200,
@@ -111,7 +110,7 @@ def params_list_to_dict(params):
 
 def handle_bedrock_action(event):
     print("=== BEDROCK TOOL INVOCATION ===")
-    print(json.dumps(event, indent=2))
+    print("Event keys:", sorted(event.keys()) if isinstance(event, dict) else type(event).__name__)
 
     action_group = event.get("actionGroup")
     function_name = event.get("function")
@@ -249,7 +248,7 @@ def handle_bedrock_action(event):
 # ---------------------------
 def lambda_handler(event, context):
     print("=== STREAMLITAPILAMBDA ENTRY ===")
-    print(json.dumps(event))
+    print("Event keys:", sorted(event.keys()) if isinstance(event, dict) else type(event).__name__)
 
     # If Bedrock Agent is calling (tool mode)
     if "actionGroup" in event and "function" in event:

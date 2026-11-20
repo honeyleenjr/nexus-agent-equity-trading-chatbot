@@ -34,7 +34,7 @@ def calculate_macd(series):
 
 def lambda_handler(event, context):
     print("=== TechnicalAnalyzerLambda ===")
-    print(json.dumps(event, indent=2))
+    print("Event keys:", sorted(event.keys()) if isinstance(event, dict) else type(event).__name__)
 
     symbol = str(event.get("symbol", "AAPL")).upper()
     indicator = str(event.get("indicator", "RSI")).upper()

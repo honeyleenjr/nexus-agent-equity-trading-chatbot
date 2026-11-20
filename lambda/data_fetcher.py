@@ -19,7 +19,7 @@ def load_api_key():
 
     # ---------- Try PRIMARY secret ----------
     try:
-        print(f"Trying primary secret: {primary}")
+        print("Trying primary secret.")
         sec = sm.get_secret_value(SecretId=primary)["SecretString"]
         data = json.loads(sec)
 
@@ -34,11 +34,11 @@ def load_api_key():
             return api_key
 
     except Exception as e:
-        print(f"Primary secret failed → {e}")
+        print("Primary secret failed:", type(e).__name__)
 
     # ---------- Try BACKUP secret ----------
     try:
-        print(f"Trying backup secret: {backup}")
+        print("Trying backup secret.")
         sec = sm.get_secret_value(SecretId=backup)["SecretString"]
         data = json.loads(sec)
 
@@ -53,7 +53,7 @@ def load_api_key():
             return api_key
 
     except Exception as e:
-        print(f"Backup secret failed → {e}")
+        print("Backup secret failed:", type(e).__name__)
 
     print("❌ NO VALID API KEY FOUND.")
     return None
@@ -109,7 +109,7 @@ def extract_symbol(event):
 # ==============================================================
 def lambda_handler(event, context):
     print("=== DATAFETCHER EVENT ===")
-    print(json.dumps(event))
+    print("Event keys:", sorted(event.keys()) if isinstance(event, dict) else type(event).__name__)
 
     symbol = extract_symbol(event) or "AAPL"
     symbol = symbol.upper()
@@ -124,13 +124,14 @@ def lambda_handler(event, context):
         f"https://www.alphavantage.co/query?"
         f"function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
     )
-    print("Fetching:", url)
+    print(f"Fetching Alpha Vantage daily data for symbol: {symbol}")
 
     try:
         with urllib.request.urlopen(url) as response:
             data = json.loads(response.read().decode("utf-8"))
     except Exception as e:
-        return {"error": f"FETCH FAILED: {str(e)}"}
+        print("Fetch error type:", type(e).__name__)
+        return {"error": "FETCH FAILED"}
 
     series = data.get("Time Series (Daily)")
     if not series:
