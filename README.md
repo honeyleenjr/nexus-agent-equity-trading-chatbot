@@ -32,9 +32,31 @@ Amazon Bedrock (Agents, Claude) · AWS Lambda · API Gateway · S3 · DynamoDB �
 4. **User interface & API layer** — proxy Lambda, API Gateway, chat UI hosted via S3 + CloudFront
 5. **Monitoring, security & scaling** — CloudWatch logs and alarms, Cognito authentication, DynamoDB chat history
 
-## Screenshots
+## Gallery
 
-![Nexus Equity Trading Assistant — Streamlit UI](images/streamlit-ui.png)
+<img src="images/slide-title.png" alt="Nexus Agent — SW AI Financial Chatbot" width="560">
+
+![Architecture overview](images/slide-architecture.png)
+
+![Data flow diagram](images/slide-data-flow.png)
+
+<table>
+<tr>
+<td><img src="images/slide-use-case.png" alt="Use-case diagram"></td>
+<td><img src="images/slide-state-diagram.png" alt="State diagram"></td>
+</tr>
+</table>
+
+![Data model](images/slide-data-model.png)
+
+<table>
+<tr>
+<td><img src="images/streamlit-ui.png" alt="Nexus Equity Trading Assistant — Streamlit UI"></td>
+<td><img src="images/streamlit-ui-2.png" alt="Nexus Equity Trading Assistant — Streamlit UI, analysis view"></td>
+</tr>
+</table>
+
+*Slides from the project presentation — the full 23-slide deck is in `docs/`.*
 
 ## Repository contents
 
